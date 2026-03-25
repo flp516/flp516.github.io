@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flp516 | OpenClaw Developer</title>
+    <meta name="description" content="OpenClaw 技能开发者 - 钉钉、飞书、企业微信 Channel 配置专家">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Projects */
+        .projects {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .project-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .project-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+        
+        .project-name:hover {
+            color: var(--primary);
+        }
+        
+        .project-lang {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+        }
+        
+        .project-desc {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .project-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .stats { gap: 20px; }
+            .stat-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://avatars.githubusercontent.com/u/269465011?v=4" alt="flp516" class="avatar">
+            <h1>flp516</h1>
+            <p class="tagline">OpenClaw 技能开发者 | 让 AI 助手连接更多平台</p>
+            <div class="social-links">
+                <a href="https://github.com/flp516" target="_blank">GitHub</a>
+                <a href="https://www.xiaoyiai.cc">xiaoyiai.cc</a>
+            </div>
+        </header>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">5</div>
+                <div class="stat-label">开源项目</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">3</div>
+                <div class="stat-label">编程语言</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">开源率</div>
+            </div>
+        </div>
+        
+        <section class="projects">
+            <h2 class="section-title">开源项目</h2>
+            <div class="project-grid">
+                <article class="project-card">
+                    <div class="project-header">
+                        <a href="https://github.com/flp516/OpenClawSkills" class="project-name" target="_blank">OpenClawSkills</a>
+                        <span class="project-lang">JavaScript</span>
+                    </div>
+                    <p class="project-desc">OpenClaw技能集合 - 包含钉钉、飞书等Channel配置技能</p>
+                    <div class="project-meta">
+                        <span>⭐ 0</span>
+                        <span>🔀 0 forks</span>
+                        <span>📅 更新于 2026-03-24</span>
+                    </div>
+                </article>
+                
+                <article class="project-card">
+                    <div class="project-header">
+                        <a href="https://github.com/flp516/wecom-bot-setup-skill" class="project-name" target="_blank">wecom-bot-setup-skill</a>
+                        <span class="project-lang">Config</span>
+                    </div>
+                    <p class="project-desc">微信 ClawBot 配置技能 - 帮助用户在 OpenClaw 中配置微信插件</p>
+                    <div class="project-meta">
+                        <span>⭐ 0</span>
+                        <span>🔀 0 forks</span>
+                        <span>📅 更新于 2026-03-24</span>
+                    </div>
+                </article>
+                
+                <article class="project-card">
+                    <div class="project-header">
+                        <a href="https://github.com/flp516/dingtalk-channel-setup" class="project-name" target="_blank">dingtalk-channel-setup</a>
+                        <span class="project-lang">Shell</span>
+                    </div>
+                    <p class="project-desc">钉钉Channel配置技能 - 快速配置钉钉机器人与OpenClaw的集成</p>
+                    <div class="project-meta">
+                        <span>⭐ 0</span>
+                        <span>🔀 0 forks</span>
+                        <span>📅 更新于 2026-03-24</span>
+                    </div>
+                </article>
+                
+                <article class="project-card">
+                    <div class="project-header">
+                        <a href="https://github.com/flp516/feishu-channel-skill" class="project-name" target="_blank">feishu-channel-skill</a>
+                        <span class="project-lang">JavaScript</span>
+                    </div>
+                    <p class="project-desc">飞书 Channel 配置 Skill - 帮助用户在飞书中与 OpenClaw 对话</p>
+                    <div class="project-meta">
+                        <span>⭐ 0</span>
+                        <span>🔀 0 forks</span>
+                        <span>📅 更新于 2026-03-24</span>
+                    </div>
+                </article>
+                
+                <article class="project-card">
+                    <div class="project-header">
+                        <a href="https://github.com/flp516/openclawskill" class="project-name" target="_blank">openclawskill</a>
+                        <span class="project-lang">Python</span>
+                    </div>
+                    <p class="project-desc">OpenClaw 技能仓库</p>
+                    <div class="project-meta">
+                        <span>⭐ 0</span>
+                        <span>🔀 0 forks</span>
+                        <span>📅 更新于 2026-03-20</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2026 flp516 · Powered by <a href="https://edgeone.ai" target="_blank">EdgeOne Pages</a></p>
+            <p style="margin-top: 8px;">Made with ❤️ for OpenClaw Community</p>
+        </footer>
+    </div>
+</body>
+</html>
