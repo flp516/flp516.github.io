@@ -119,6 +119,20 @@ footer{text-align:center;padding:28px 22px;color:rgba(255,255,255,.18);font-size
 .skill-card:nth-child(3){animation-delay:.06s}
 .skill-card:nth-child(4){animation-delay:.09s}
 
+/* Source link & download button */
+.skill-card-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.skill-card-source-link{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;background:rgba(41,151,255,.1);color:#2997ff;text-decoration:none;transition:all .2s}
+.skill-card-source-link:hover{background:rgba(41,151,255,.2)}
+.skill-card-download{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;background:rgba(52,199,89,.1);color:#34c759;text-decoration:none;cursor:pointer;transition:all .2s;border:none;font-family:inherit}
+.skill-card-download:hover{background:rgba(52,199,89,.2)}
+.skill-card-download.copied{background:rgba(255,149,0,.15);color:#ff9500}
+.skill-detail-extras{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.skill-detail-tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;margin-bottom:4px}
+.skill-detail-tag.paid{background:rgba(255,69,58,.12);color:#ff453a}
+.skill-detail-tag.free{background:rgba(52,199,89,.12);color:#34c759}
+.skill-detail-tag.account{background:rgba(255,149,0,.12);color:#ff9500}
+.skill-detail-tag.noaccount{background:rgba(90,200,250,.12);color:#5ac8fa}
+
 @media(max-width:768px){
   .hero h1{font-size:32px}
   .hero p{font-size:15px}
@@ -258,6 +272,9 @@ footer{text-align:center;padding:28px 22px;color:rgba(255,255,255,.18);font-size
       var cmd1 = s.cmds && s.cmds[0] ? escapeHtml(s.cmds[0]) : '';
       var cmd2 = s.cmds && s.cmds[1] ? escapeHtml(s.cmds[1]) : '';
       var hp = s.h || '-';
+      var srcUrl = s.source_url || '';
+      var zipFile = s.zip_file || '';
+      var installCmd = s.install_cmd || '';
 
       html += '<div class="skill-card" onclick="toggleCard(this)">';
       html += '<div class="skill-card-header">';
@@ -267,7 +284,18 @@ footer{text-align:center;padding:28px 22px;color:rgba(255,255,255,.18);font-size
       html += '<div class="skill-card-dir">' + escapeHtml(s.d) + '</div>';
       html += '</div></div>';
       html += '<div class="skill-card-badge">' + s.c + '</div>';
-      html += '<div class="skill-card-desc">' + escapeHtml(s.desc) + '</div>';
+      html += '<div class="skill-card-desc">' + escapeHtml(s.desc || '') + '</div>';
+      // Actions: source link + download
+      html += '<div class="skill-card-actions">';
+      if (srcUrl) {
+        html += '<a href="' + srcUrl + '" target="_blank" rel="noopener" class="skill-card-source-link" onclick="event.stopPropagation()">🔗 来源</a>';
+      }
+      if (zipFile) {
+        html += '<a href="' + zipFile + '" download class="skill-card-download" onclick="event.stopPropagation()">⬇️ 下载安装包</a>';
+      } else if (installCmd) {
+        html += '<button class="skill-card-download" onclick="event.stopPropagation(); copyInstallCmd(this,' + JSON.stringify(installCmd) + ')">📋 复制安装命令</button>';
+      }
+      html += '</div>';
       html += '<div class="skill-card-bottom">';
       html += '<span class="skill-card-source">' + escapeHtml(s.src) + '</span>';
       html += '<span class="skill-card-expand">查看详情</span>';
@@ -275,17 +303,43 @@ footer{text-align:center;padding:28px 22px;color:rgba(255,255,255,.18);font-size
       html += '<div class="skill-detail">';
       html += '<div class="skill-detail-grid">';
       html += '<div class="skill-detail-item"><div class="skill-detail-label">来源</div><div class="skill-detail-value">' + escapeHtml(s.src || '-') + '</div></div>';
-      html += '<div class="skill-detail-item"><div class="skill-detail-label">作者</div><div class="skill-detail-value">' + escapeHtml(s.a || '-') + '</div></div>';
+      html += '<div class="skill-detail-item"><div class="skill-detail-label">所属</div><div class="skill-detail-value">' + escapeHtml(s.author_org || '-') + '</div></div>';
       html += '<div class="skill-detail-item"><div class="skill-detail-label">目录</div><div class="skill-detail-value">' + escapeHtml(s.d) + '</div></div>';
       html += '<div class="skill-detail-item"><div class="skill-detail-label">分类</div><div class="skill-detail-value">' + s.c + '</div></div>';
       html += '</div>';
-      html += '<div class="skill-detail-item" style="margin-bottom:10px"><div class="skill-detail-label">主页</div><div class="skill-detail-value">';
-      if (hp !== '-' && hp) {
-        html += '<a href="' + hp + '" target="_blank" rel="noopener">' + hp + '</a>';
+      // Tags
+      html += '<div style="margin-bottom:8px">';
+      var paidTag = s.is_paid === '是' ? '<span class="skill-detail-tag paid">💰 付费</span>' : '<span class="skill-detail-tag free">🆓 免费</span>';
+      var acctTag = s.depends_account === '是' ? '<span class="skill-detail-tag account">🔑 需要账号</span>' : '<span class="skill-detail-tag noaccount">🔓 无需账号</span>';
+      html += paidTag + acctTag;
+      html += '</div>';
+      // Source URL
+      html += '<div class="skill-detail-item" style="margin-bottom:8px"><div class="skill-detail-label">来源地址</div><div class="skill-detail-value">';
+      if (srcUrl) {
+        html += '<a href="' + srcUrl + '" target="_blank" rel="noopener">' + escapeHtml(srcUrl) + '</a>';
       } else {
         html += '-';
       }
       html += '</div></div>';
+      // Homepage
+      if (hp && hp !== '-') {
+        html += '<div class="skill-detail-item" style="margin-bottom:8px"><div class="skill-detail-label">主页</div><div class="skill-detail-value">';
+        html += '<a href="' + hp + '" target="_blank" rel="noopener">' + escapeHtml(hp) + '</a>';
+        html += '</div></div>';
+      }
+      // Install command
+      if (installCmd) {
+        html += '<div class="skill-commands"><div class="skill-commands-label">安装命令</div>';
+        html += '<code class="skill-command-code">' + escapeHtml(installCmd) + '</code>';
+        html += '</div>';
+      }
+      // Use case
+      if (s.use_case) {
+        html += '<div class="skill-detail-extras">';
+        html += '<div class="skill-detail-item"><div class="skill-detail-label">典型用途</div><div class="skill-detail-value">' + escapeHtml(s.use_case) + '</div></div>';
+        html += '</div>';
+      }
+      // Quick commands
       if (cmd1) {
         html += '<div class="skill-commands"><div class="skill-commands-label">快速命令</div>';
         html += '<code class="skill-command-code">' + cmd1 + '</code>';
@@ -307,6 +361,32 @@ footer{text-align:center;padding:28px 22px;color:rgba(255,255,255,.18);font-size
     var cards = document.querySelectorAll('.skill-card.expanded');
     for (var i=0; i<cards.length; i++) cards[i].classList.remove('expanded');
     if (!expanded) el.classList.add('expanded');
+  };
+
+  window.copyInstallCmd = function(btn, cmd) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd).then(function() {
+        btn.textContent = '✅ 已复制';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = '📋 复制安装命令';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = cmd;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '✅ 已复制';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = '📋 复制安装命令';
+        btn.classList.remove('copied');
+      }, 2000);
+    }
   };
 
   // Search
